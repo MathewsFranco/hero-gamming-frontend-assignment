@@ -1,13 +1,15 @@
-import './main.css'
+import './main.css';
 
-import * as React from 'react'
+import * as React from 'react';
 
-import { UniversalRouter } from './universal-router'
+import { UniversalRouter } from './universal-router';
+import { useLocation } from 'react-router-dom';
 
 export function Root(props) {
-  return (
-    <UniversalRouter location={props.location}>
-      <code>Replace me with your app</code>
-    </UniversalRouter>
-  )
+  // const createNewStopWatch = async () => {
+  //   const started = newDate();
+  //   console.log(`🚀 ~ started`, started);
+  // };
+
+  return <UniversalRouter location={props.location} />;
 }
