@@ -1,4 +1,4 @@
-function msToTime(duration) {
+function timeConverter(duration) {
   let milliseconds = parseInt((duration % 1000) / 100);
   let seconds = Math.floor((duration / 1000) % 60);
   let minutes = Math.floor((duration / (1000 * 60)) % 60);
@@ -14,3 +14,5 @@ function msToTime(duration) {
 
   return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
 }
+
+export default timeConverter;
