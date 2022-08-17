@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
 import List from '../components/Layouts/List';
-import StopWatches from '../components/Layouts/StopWatch/indes';
+import StopWatches from '../components/Layouts/StopWatch';
 
 export function UniversalRouter(props) {
   if (process.env.BUILD_TARGET === 'client') {
