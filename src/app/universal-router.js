@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactRouter from 'react-router-dom';
+import Details from '../components/Layouts/Details';
 import List from '../components/Layouts/List';
-import StopWatches from '../components/Layouts/StopWatch';
 
 export function UniversalRouter(props) {
   if (process.env.BUILD_TARGET === 'client') {
@@ -9,7 +9,7 @@ export function UniversalRouter(props) {
       <ReactRouter.BrowserRouter>
         <ReactRouter.Switch>
           <ReactRouter.Route path='/' exact render={() => <List />} />
-          <ReactRouter.Route path='/:id' render={() => <StopWatches />} />
+          <ReactRouter.Route path='/:id' render={() => <Details />} />
         </ReactRouter.Switch>
       </ReactRouter.BrowserRouter>
     );
