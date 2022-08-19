@@ -11,7 +11,6 @@ const List = () => {
     const started = Date.now();
     try {
       const res = await api.post('', { started });
-      console.log(`🚀 ~ res`, res);
       history.push(`/${res.data.__id}`);
     } catch (err) {
       console.log(`🚀 ~ err`, err);
@@ -21,8 +20,6 @@ const List = () => {
   const getData = async (query) => {
     try {
       const { data } = await api.get('', { params: query });
-      console.log(`🚀 ~ data`, data);
-
       query
         ? setData((prev) => {
             return {

@@ -10,7 +10,6 @@ const Details = () => {
   const getData = async (query) => {
     try {
       const { data } = await api.get(`/${id}`, { params: query });
-      console.log(`🚀 ~ data single`, data);
       setData(data);
     } catch (err) {
       // TODO: error handling
