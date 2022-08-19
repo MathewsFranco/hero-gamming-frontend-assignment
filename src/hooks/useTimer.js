@@ -7,6 +7,7 @@ const useTimer = (item) => {
   const [isPaused, setIsPaused] = useState(Boolean(item.toggles.length % 2));
   const displayTime = timeResumed(item, isPaused);
   const [timer, setTimer] = useState(displayTime);
+  const [laps, setLaps] = useState(item.laps);
   const [lapsTimes, setLapsTimes] = useState();
   const [allTimeStamps, setAllTimeStamps] = useState([
     item.started,
@@ -38,8 +39,10 @@ const useTimer = (item) => {
       console.log(`🚀 ~ err`, err);
     }
   };
-  const handleToggle = (now) => {
-    postToggle(now);
+  const handleToggle = (time) => {
+    postToggle(time);
+    setAllTimeStamps((prev) => [...prev, time]);
+
     if (isPaused) {
       setIsPaused(false);
       countRef.current = setInterval(() => {
@@ -92,7 +95,7 @@ const useTimer = (item) => {
   const getLapsTimes = () => {
     const sortedArr = allTimeStamps.sort((a, b) => a - b);
     let lapTime;
-    const lapsDuration = item?.laps.map((lap, index) => {
+    const lapsDuration = laps.map((lap, index) => {
       if (index === 0) {
         const timeInterval = sortedArr.filter((i) => {
           return i <= lap;
@@ -100,7 +103,7 @@ const useTimer = (item) => {
         lapTime = timeReducer(timeInterval);
       } else {
         const timeInterval = sortedArr.filter((i) => {
-          return i <= lap && i >= item?.laps[index - 1];
+          return i <= lap && i >= laps[index - 1];
         });
         lapTime = timeReducer(timeInterval);
       }
@@ -111,9 +114,19 @@ const useTimer = (item) => {
 
   const registerLap = (time) => {
     postLap(time);
-    //TODO: show updated onscreen
-    setAllTimeStamps((prev) => [time, ...prev]);
-    getLapsTimes();
+
+    const sortedArr = [...allTimeStamps, time].sort((a, b) => a - b);
+    const timeInterval = sortedArr.filter((i) => {
+      if (laps.length) {
+        return i <= time && i >= laps[laps.length - 1];
+      }
+      return i <= time && i >= item.started;
+    });
+    const lapTime = timeReducer(timeInterval);
+
+    setLapsTimes((prev) => [lapTime, ...prev]);
+    setAllTimeStamps((prev) => [...prev, time]);
+    setLaps((prev) => [...prev, time]);
   };
 
   return {
