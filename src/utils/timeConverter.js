@@ -1,18 +1,10 @@
-function timeConverter(duration) {
-  let milliseconds = parseInt((duration % 1000) / 100);
-  let seconds = Math.floor((duration / 1000) % 60);
-  let minutes = Math.floor((duration / (1000 * 60)) % 60);
-  let hours = Math.floor((duration / (1000 * 60 * 60)) % 24);
+const timeConverter = (milliseconds) => {
+  const pad = (n, z = 2) => ('00' + n).slice(-z);
+  const hh = pad((milliseconds / 3.6e6) | 0);
+  const mm = pad(((milliseconds % 3.6e6) / 6e4) | 0);
+  const ss = pad(((milliseconds % 6e4) / 1000) | 0);
+  const mmm = pad(milliseconds % 1000, 3);
 
-  hours = hours < 10 ? '0' + hours : hours;
-  minutes = minutes < 10 ? '0' + minutes : minutes;
-  seconds = seconds < 10 ? '0' + seconds : seconds;
-  milliseconds = milliseconds.toLocaleString('en-US', {
-    minimumIntegerDigits: 3,
-    useGrouping: false,
-  });
-
-  return hours + ':' + minutes + ':' + seconds + '.' + milliseconds;
-}
-
+  return `${hh}:${mm}:${ss}.${mmm}`;
+};
 export default timeConverter;
