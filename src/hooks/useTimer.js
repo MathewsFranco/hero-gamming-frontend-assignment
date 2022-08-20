@@ -71,10 +71,18 @@ const useTimer = (item) => {
   };
 
   const postReset = async (started) => {
+    const tempInfo = { timer, allTimeStamps, lapsTimes };
+
     try {
       await api.post(`/${item.__id}`, { id: item.__id, started });
     } catch (err) {
       console.log(`🚀 ~ err`, err);
+      setTimer(tempInfo.timer);
+      setAllTimeStamps(tempInfo.allTimeStamps);
+      setLapsTimes(tempInfo.lapsTimes);
+      setIsPaused(true);
+      clearInterval(countRef.current);
+      errorToast('Something went wrong 🚨');
     }
   };
   const handleReset = (now) => {
@@ -108,6 +116,12 @@ const useTimer = (item) => {
       await api.post(`/${item.__id}/lap`, { id: item.__id, time });
     } catch (err) {
       console.log(`🚀 ~ err`, err);
+
+      // remove the added item from the display
+      setLapsTimes((prev) => {
+        return prev.splice(1);
+      });
+      errorToast(`We couldn't register your lap 🚨`);
     }
   };
   const getLapsTimes = () => {

@@ -6,19 +6,15 @@ import StopWatchDetails from '../../StopWatchDetails';
 const Details = () => {
   const { id } = useParams();
   const [data, setData] = useState();
-  const [loading, setLoading] = useState(false);
   const [err, setErr] = useState(false);
 
   const getData = async (query) => {
     try {
-      setLoading(true);
       const { data } = await api.get(`/${id}`, { params: query });
       setData(data);
     } catch (err) {
       setErr(true);
       console.log(`🚀 ~ err`, err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -29,7 +25,10 @@ const Details = () => {
   return (
     <>
       {err ? (
-        <>Couldn't find your watch</>
+        <>
+          Couldn't find your watch
+          <button onClick={() => history.back()}>Go back to list</button>
+        </>
       ) : data ? (
         <StopWatchDetails data={data} />
       ) : (
