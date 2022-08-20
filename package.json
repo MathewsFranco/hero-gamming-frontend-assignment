@@ -19,7 +19,8 @@
     "react-dom": "16.13.1",
     "react-is": "^16.13.1",
     "react-router-dom": "5.1.2",
-    "react-ssr-prepass": "1.2.0"
+    "react-ssr-prepass": "1.2.0",
+    "react-toastify": "^9.0.8"
   },
   "devDependencies": {
     "razzle": "3.0.0"
