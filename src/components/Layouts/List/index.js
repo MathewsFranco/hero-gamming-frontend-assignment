@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import api from '../../../utils/api';
+import Button from '../../Button';
 import TimeDisplay from '../../TimeDisplay';
 
 const List = () => {
@@ -56,45 +57,33 @@ const List = () => {
     getData({ page: data.meta.currentPage + 1 });
   };
 
-  const notify = () => {
-    toast.warn('🦄 Wow so easy!', {
-      position: 'top-center',
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-    });
-  };
-
   return (
     <>
       {err ? (
         <>
-          <button onclick={() => getData()}>Give it another try...</button>
           <div>Hmm, looks like your stopwatches are not here!</div>
+          <button onclick={() => getData()}>Give it another try...</button>
         </>
       ) : loading.main ? (
         <div>Loading...</div>
       ) : (
         <>
-          <button onClick={notify}>toast</button>
-          <button
+          <Button
             onClick={createNewStopWatch}
             disabled={loading.creatingNewStopWatch}
-          >
-            {loading.creatingNewStopWatch ? 'Creating new stopwatch' : 'new ⏱'}
-          </button>
+            label='New'
+          />
           {data.result?.map((e) => (
             <TimeDisplay item={e} key={e.__id} />
           ))}
         </>
       )}
       {data?.meta?.currentPage !== data?.meta?.totalPages && (
-        <button onClick={loadMoreWatches} disabled={loading.fetchNewPage}>
-          {loading.fetchNewPage ? 'Loading...' : 'Load +'}
-        </button>
+        <Button
+          onClick={loadMoreWatches}
+          disabled={loading.fetchNewPage}
+          label={loading.fetchNewPage ? 'Wait' : 'More'}
+        />
       )}
     </>
   );
