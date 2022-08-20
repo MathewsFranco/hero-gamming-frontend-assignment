@@ -22,8 +22,8 @@ const useTimer = (item) => {
   const handleStart = () => {
     !isPaused &&
       (countRef.current = setInterval(() => {
-        setTimer((timer) => timer + 10);
-      }, 10));
+        setTimer((timer) => timer + 3);
+      }, 3));
   };
 
   useEffect(() => {
@@ -50,8 +50,8 @@ const useTimer = (item) => {
         setIsPaused(false);
         setTimer((prev) => prev + (Date.now() - time));
         countRef.current = setInterval(() => {
-          setTimer((timer) => timer + 10);
-        }, 10);
+          setTimer((timer) => timer + 3);
+        }, 3);
       }
     }
   };
@@ -62,8 +62,8 @@ const useTimer = (item) => {
     if (isPaused) {
       setIsPaused(false);
       countRef.current = setInterval(() => {
-        setTimer((timer) => timer + 10);
-      }, 10);
+        setTimer((timer) => timer + 3);
+      }, 3);
       return;
     }
     clearInterval(countRef.current);
@@ -71,12 +71,11 @@ const useTimer = (item) => {
   };
 
   const postReset = async (started) => {
-    const tempInfo = { timer, allTimeStamps, lapsTimes };
-
     try {
       await api.post(`/${item.__id}`, { id: item.__id, started });
     } catch (err) {
       console.log(`🚀 ~ err`, err);
+      const tempInfo = { timer, allTimeStamps, lapsTimes };
       setTimer(tempInfo.timer);
       setAllTimeStamps(tempInfo.allTimeStamps);
       setLapsTimes(tempInfo.lapsTimes);
@@ -92,10 +91,11 @@ const useTimer = (item) => {
     setLapsTimes([]);
     // clear previous interval (if it does exists)
     clearInterval(countRef.current);
+
     // create a new counter
     countRef.current = setInterval(() => {
-      setTimer((timer) => timer + 10);
-    }, 10);
+      setTimer((timer) => timer + 3);
+    }, 3);
     setTimer(0);
   };
 
