@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import api from '../utils/api';
 import timeResumed, { timeReducer } from '../utils/timeResumed';
 import { useHistory } from 'react-router-dom';
+import useToast from './useToast';
 
 const useTimer = (item) => {
   const [isPaused, setIsPaused] = useState(Boolean(item.toggles.length % 2));
@@ -16,6 +17,7 @@ const useTimer = (item) => {
   ]);
   const countRef = useRef(null);
   const history = useHistory();
+  const { errorToast } = useToast();
 
   const handleStart = () => {
     !isPaused &&
@@ -37,6 +39,20 @@ const useTimer = (item) => {
       });
     } catch (err) {
       console.log(`🚀 ~ err`, err);
+      errorToast('Something went wrong saving your action 🚨');
+
+      // used to roll back the timer after failing to save the action on BE
+      if (isPaused) {
+        setIsPaused(true);
+        setTimer((prev) => prev - (Date.now() - time));
+        clearInterval(countRef.current);
+      } else {
+        setIsPaused(false);
+        setTimer((prev) => prev + (Date.now() - time));
+        countRef.current = setInterval(() => {
+          setTimer((timer) => timer + 10);
+        }, 10);
+      }
     }
   };
   const handleToggle = (time) => {
@@ -64,6 +80,8 @@ const useTimer = (item) => {
   const handleReset = (now) => {
     postReset(now);
     setIsPaused(false);
+    setAllTimeStamps([now]);
+    setLapsTimes([]);
     // clear previous interval (if it does exists)
     clearInterval(countRef.current);
     // create a new counter
@@ -132,8 +150,8 @@ const useTimer = (item) => {
   return {
     timer,
     lapsTimes,
-    registerLap,
     isPaused,
+    registerLap,
     handleToggle,
     handleReset,
     handleDelete,

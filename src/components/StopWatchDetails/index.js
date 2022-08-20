@@ -6,6 +6,7 @@ const StopWatchDetails = ({ data }) => {
   const {
     timer,
     lapsTimes,
+    isPaused,
     registerLap,
     handleReset,
     handleToggle,
@@ -14,18 +15,23 @@ const StopWatchDetails = ({ data }) => {
 
   return (
     <>
+      <button onClick={() => history.back()}>back</button>
       <div>{timeConverter(timer)}</div>
-      <button onClick={() => handleToggle(Date.now())}>Pause</button>
-      <button onClick={() => handleToggle(Date.now())}>Resume</button>
-      <button onClick={() => handleReset(Date.now())}>Reset</button>
-      <button onClick={handleDelete}>delete</button>
-      <button
-        onClick={() => {
-          registerLap(Date.now());
-        }}
-      >
-        Lap
+      <button onClick={() => handleToggle(Date.now())}>
+        {isPaused ? 'Resume' : 'Pause'}
       </button>
+      {isPaused ? (
+        <button onClick={() => handleReset(Date.now())}>Reset</button>
+      ) : (
+        <button
+          onClick={() => {
+            registerLap(Date.now());
+          }}
+        >
+          Lap
+        </button>
+      )}
+      <button onClick={handleDelete}>delete</button>
       {lapsTimes?.map((lap, index) => {
         return <div key={index}>{timeConverter(lap)}</div>;
       })}
