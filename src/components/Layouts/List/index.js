@@ -72,6 +72,7 @@ const List = () => {
       ) : (
         <Container>
           <Button
+            center
             onClick={createNewStopWatch}
             disabled={loading.creatingNewStopWatch}
             label='New'
@@ -81,6 +82,7 @@ const List = () => {
           ))}
           {data?.meta?.currentPage !== data?.meta?.totalPages && (
             <Button
+              center
               onClick={loadMoreWatches}
               disabled={loading.fetchNewPage}
               label={loading.fetchNewPage ? 'Wait' : 'More'}

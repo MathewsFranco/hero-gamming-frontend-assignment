@@ -141,7 +141,7 @@ const useTimer = (item) => {
       }
       return lapTime;
     });
-    setLapsTimes(lapsDuration.reverse());
+    setLapsTimes(lapsDuration);
   };
 
   const registerLap = (time) => {
@@ -156,7 +156,7 @@ const useTimer = (item) => {
     });
     const lapTime = timeReducer(timeInterval);
 
-    setLapsTimes((prev) => [lapTime, ...prev]);
+    setLapsTimes((prev) => [...prev, lapTime]);
     setAllTimeStamps((prev) => [...prev, time]);
     setLaps((prev) => [...prev, time]);
   };

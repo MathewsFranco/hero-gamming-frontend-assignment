@@ -1,11 +1,17 @@
-import React, { useId } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import useTimer from '../../hooks/useTimer';
-import timeConverter from '../../utils/timeConverter';
+import BigClock from '../BigClock';
 import Button from '../Button';
-import TimeDisplay from '../TimeDisplay';
-import { BackToList } from './styles';
+import LapDisplay from '../LapDisplay';
+import {
+  Container,
+  CustomButton,
+  FlexSpacedContainer,
+  LapsContainer,
+} from './styles';
 
 const StopWatchDetails = ({ data }) => {
+  const [fastestAndSlowestLap, setFastestAndSlowestLap] = useState([]);
   const {
     timer,
     lapsTimes,
@@ -16,31 +22,58 @@ const StopWatchDetails = ({ data }) => {
     handleDelete,
   } = useTimer(data.result);
 
+  const getFastestAndSlowestLap = (lapsTimes) => {
+    if (lapsTimes.length > 1) {
+      const slowest = Math.max(...lapsTimes);
+      const fastest = Math.min(...lapsTimes);
+      setFastestAndSlowestLap([slowest, fastest]);
+    }
+  };
+
+  useEffect(() => {
+    lapsTimes && getFastestAndSlowestLap(lapsTimes);
+  }, [lapsTimes]);
+
   return (
-    <>
-      <BackToList onClick={() => history.back()}> ← Back</BackToList>
-      <div>{timeConverter(timer)}</div>
-      {isPaused ? (
-        <Button onClick={() => handleReset(Date.now())} label='Reset' />
-      ) : (
+    <Container>
+      <FlexSpacedContainer>
+        <CustomButton onClick={() => history.back()}>Back</CustomButton>
+        <CustomButton isDelete onClick={handleDelete}>
+          Delete
+        </CustomButton>
+      </FlexSpacedContainer>
+      <BigClock time={timer} />
+      <FlexSpacedContainer style={{ marginBottom: 20 }}>
+        {isPaused ? (
+          <Button onClick={() => handleReset(Date.now())} label='Reset' />
+        ) : (
+          <Button
+            onClick={() => {
+              registerLap(Date.now());
+            }}
+            label='Lap'
+          />
+        )}
         <Button
-          onClick={() => {
-            registerLap(Date.now());
-          }}
-          label='Lap'
+          onClick={() => handleToggle(Date.now())}
+          playButton
+          isPaused={isPaused}
+          label={isPaused ? 'Resume' : 'Stop'}
         />
-      )}
-      <Button onClick={handleDelete} label='Delete' />
-      {lapsTimes?.map((lap, index) => {
-        return <div key={index}>{timeConverter(lap)}</div>;
-      })}
-      <Button
-        onClick={() => handleToggle(Date.now())}
-        playButton
-        isPaused={isPaused}
-        label={isPaused ? 'Resume' : 'Stop'}
-      />
-    </>
+      </FlexSpacedContainer>
+      <LapsContainer>
+        {lapsTimes?.map((lap, index) => {
+          return (
+            <LapDisplay
+              lap={lap}
+              key={index}
+              index={index}
+              fastestAndSlowestLap={fastestAndSlowestLap}
+            />
+          );
+        })}
+      </LapsContainer>
+    </Container>
   );
 };
 
