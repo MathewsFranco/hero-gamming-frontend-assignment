@@ -19,8 +19,4 @@ body,
   background-color: black;
   color: white;
   padding: 5px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
 }
