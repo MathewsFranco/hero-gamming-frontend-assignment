@@ -1,14 +1,8 @@
 import { css } from '@emotion/core';
 import styled from '@emotion/styled';
 
-export const Container = styled.div`
-  background-color: #454545;
-  width: 3px;
-  height: 3px;
-  border-radius: 50%;
-`;
-
 export const CustomButton = styled.button`
+  margin: auto;
   border-radius: 50%;
   width: 80px;
   height: 80px;
