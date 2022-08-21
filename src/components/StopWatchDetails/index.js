@@ -2,6 +2,8 @@ import React, { useId } from 'react';
 import useTimer from '../../hooks/useTimer';
 import timeConverter from '../../utils/timeConverter';
 import Button from '../Button';
+import TimeDisplay from '../TimeDisplay';
+import { BackToList } from './styles';
 
 const StopWatchDetails = ({ data }) => {
   const {
@@ -16,7 +18,7 @@ const StopWatchDetails = ({ data }) => {
 
   return (
     <>
-      <button onClick={() => history.back()}>back</button>
+      <BackToList onClick={() => history.back()}> ← Back</BackToList>
       <div>{timeConverter(timer)}</div>
       {isPaused ? (
         <Button onClick={() => handleReset(Date.now())} label='Reset' />

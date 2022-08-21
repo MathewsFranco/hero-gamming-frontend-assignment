@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../../utils/api';
 import StopWatchDetails from '../../StopWatchDetails';
+import { ErrContainer } from '../List/styles';
 
 const Details = () => {
   const { id } = useParams();
@@ -25,10 +26,10 @@ const Details = () => {
   return (
     <>
       {err ? (
-        <>
+        <ErrContainer>
           Couldn't find your watch
           <button onClick={() => history.back()}>Go back to list</button>
-        </>
+        </ErrContainer>
       ) : data ? (
         <StopWatchDetails data={data} />
       ) : (

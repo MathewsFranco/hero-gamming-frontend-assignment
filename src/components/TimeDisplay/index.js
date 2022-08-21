@@ -2,6 +2,8 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 import useTimer from '../../hooks/useTimer';
 import timeConverter from '../../utils/timeConverter';
+import { Container } from './styles';
+import pause from '../../assets/images/pause-button.png';
 
 const TimeDisplay = ({ item }) => {
   const { timer, isPaused } = useTimer(item);
@@ -11,10 +13,14 @@ const TimeDisplay = ({ item }) => {
     history.push(`/${item.__id}`);
   };
   return (
-    <div onClick={goToStopWatch} style={{ cursor: 'pointer' }}>
+    <Container
+      onClick={goToStopWatch}
+      style={{ cursor: 'pointer' }}
+      isPaused={isPaused}
+    >
       {timeConverter(timer)}
-      {isPaused && <span style={{ color: 'red' }}>paused</span>}
-    </div>
+      {isPaused && <img src={pause} />}
+    </Container>
   );
 };
 

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import useToast from '../../../hooks/useToast';
 import api from '../../../utils/api';
 import Button from '../../Button';
+import Spinner from '../../Spinner';
 import TimeDisplay from '../../TimeDisplay';
+import { Container, ErrContainer } from './styles';
 
 const List = () => {
   const [data, setData] = useState({});
@@ -14,6 +16,7 @@ const List = () => {
     creatingNewStopWatch: false,
   });
   const history = useHistory();
+  const { errorToast } = useToast();
 
   useEffect(() => {
     getData();
@@ -26,7 +29,7 @@ const List = () => {
       const res = await api.post('', { started });
       history.push(`/${res.data.__id}`);
     } catch (err) {
-      // TODO: push notification error
+      errorToast('Failed to create a new stopwatch');
       console.log(`🚀 ~ err`, err);
     } finally {
       setLoading((prev) => ({ ...prev, creatingNewStopWatch: false }));
@@ -60,14 +63,14 @@ const List = () => {
   return (
     <>
       {err ? (
-        <>
+        <ErrContainer>
           <div>Hmm, looks like your stopwatches are not here!</div>
           <button onclick={() => getData()}>Give it another try...</button>
-        </>
+        </ErrContainer>
       ) : loading.main ? (
-        <div>Loading...</div>
+        <Spinner />
       ) : (
-        <>
+        <Container>
           <Button
             onClick={createNewStopWatch}
             disabled={loading.creatingNewStopWatch}
@@ -76,14 +79,14 @@ const List = () => {
           {data.result?.map((e) => (
             <TimeDisplay item={e} key={e.__id} />
           ))}
-        </>
-      )}
-      {data?.meta?.currentPage !== data?.meta?.totalPages && (
-        <Button
-          onClick={loadMoreWatches}
-          disabled={loading.fetchNewPage}
-          label={loading.fetchNewPage ? 'Wait' : 'More'}
-        />
+          {data?.meta?.currentPage !== data?.meta?.totalPages && (
+            <Button
+              onClick={loadMoreWatches}
+              disabled={loading.fetchNewPage}
+              label={loading.fetchNewPage ? 'Wait' : 'More'}
+            />
+          )}
+        </Container>
       )}
     </>
   );
