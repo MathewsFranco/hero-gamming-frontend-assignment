@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../../utils/api';
+import Spinner from '../../Spinner';
 import StopWatchDetails from '../../StopWatchDetails';
 import { ErrContainer } from '../List/styles';
 
@@ -33,7 +34,7 @@ const Details = () => {
       ) : data ? (
         <StopWatchDetails data={data} />
       ) : (
-        <div>Loading...</div>
+        <Spinner />
       )}
     </>
   );
