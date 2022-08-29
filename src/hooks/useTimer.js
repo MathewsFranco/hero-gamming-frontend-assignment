@@ -55,6 +55,7 @@ const useTimer = (item) => {
       }
     }
   };
+
   const handleToggle = (time) => {
     postToggle(time);
     setAllTimeStamps((prev) => [...prev, time]);
@@ -148,12 +149,15 @@ const useTimer = (item) => {
     postLap(time);
 
     const sortedArr = [...allTimeStamps, time].sort((a, b) => a - b);
+    // filter the time stamps between the last lap/begin and the lap the current lap
     const timeInterval = sortedArr.filter((i) => {
       if (laps.length) {
         return i <= time && i >= laps[laps.length - 1];
       }
       return i <= time && i >= item.started;
     });
+
+    // get the time that the stopwatch where resumed in this lap
     const lapTime = timeReducer(timeInterval);
 
     setLapsTimes((prev) => [...prev, lapTime]);
