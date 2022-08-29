@@ -65,7 +65,9 @@ const List = () => {
       {err ? (
         <ErrContainer>
           <div>Hmm, looks like your stopwatches are not here!</div>
-          <button onclick={() => getData()}>Give it another try...</button>
+          <button onClick={() => location.reload()}>
+            Give it another try...
+          </button>
         </ErrContainer>
       ) : loading.main ? (
         <Spinner />

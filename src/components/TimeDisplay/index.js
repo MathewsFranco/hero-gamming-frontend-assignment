@@ -13,11 +13,7 @@ const TimeDisplay = ({ item }) => {
     history.push(`/${item.__id}`);
   };
   return (
-    <Container
-      onClick={goToStopWatch}
-      style={{ cursor: 'pointer' }}
-      isPaused={isPaused}
-    >
+    <Container onClick={goToStopWatch} isPaused={isPaused}>
       {timeConverter(timer)}
       {isPaused && <img src={pause} />}
     </Container>
