@@ -1,10 +1,17 @@
-const timeConverter = (milliseconds) => {
-  const pad = (n, z = 2) => ('00' + n).slice(-z);
-  const hh = pad((milliseconds / 3.6e6) | 0);
-  const mm = pad(((milliseconds % 3.6e6) / 6e4) | 0);
-  const ss = pad(((milliseconds % 6e4) / 1000) | 0);
-  const mmm = pad(milliseconds % 1000, 3);
+const timeConverter = (timeStamp) => {
+  // Pad to 2 or 3 digits, default is 2
+  function pad(n, z) {
+    z = z || 2;
+    return ('00' + n).slice(-z);
+  }
 
-  return `${hh}:${mm}:${ss}.${mmm}`;
+  const ms = timeStamp % 1000;
+  timeStamp = (timeStamp - ms) / 1000;
+  const secs = timeStamp % 60;
+  timeStamp = (timeStamp - secs) / 60;
+  const mins = timeStamp % 60;
+  const hrs = (timeStamp - mins) / 60;
+
+  return pad(hrs) + ':' + pad(mins) + ':' + pad(secs) + '.' + pad(ms, 3);
 };
 export default timeConverter;
