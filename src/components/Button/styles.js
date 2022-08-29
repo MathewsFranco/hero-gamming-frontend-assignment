@@ -32,6 +32,7 @@ export const CustomButton = styled.button`
   }
   &:disabled {
     filter: opacity(0.6);
+    cursor: not-allowed;
   }
 
   &:before {
