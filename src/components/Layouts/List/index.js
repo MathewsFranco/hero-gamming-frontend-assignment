@@ -82,7 +82,6 @@ const List = () => {
           {data.result?.map((e) => (
             <TimeDisplay item={e} key={e.__id} />
           ))}
-          test
           {data?.meta?.currentPage !== data?.meta?.totalPages && (
             <Button
               center
